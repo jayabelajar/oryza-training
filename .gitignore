@@ -1,0 +1,35 @@
+# Python and notebooks
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Local data and training artifacts
+data/
+datasets/
+checkpoints/
+runs/
+*.pth
+*.pt
+*.ckpt
+
+# Environment and credentials
+.env
+.env.*
+!.env.example
+credentials.json
+secrets.json
+*.pem
+*.key
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.log
+*.tmp
+*.zip
