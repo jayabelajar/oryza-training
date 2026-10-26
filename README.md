@@ -1,6 +1,6 @@
 # Oryza Vision
 
-Modul computer vision untuk mengklasifikasikan penyakit daun dan hama padi. Repository ini berisi notebook Google Colab, model TensorFlow Lite siap integrasi, metadata preprocessing, label, serta contoh gambar uji.
+Modul computer vision untuk mengklasifikasikan penyakit daun dan hama padi. Repository ini berisi notebook Google Colab, model TensorFlow Lite siap integrasi, metadata preprocessing, label, dan visualisasi evaluasi.
 
 > Hasil model merupakan indikasi awal, bukan diagnosis definitif. Validasi dengan foto dari kondisi lapangan dan perangkat target tetap diperlukan.
 
@@ -53,7 +53,6 @@ Spesifikasi lengkap tersedia di:
 
 ```text
 oryza-vision/
-├── examples/                 # Gambar untuk uji manual
 ├── models/
 │   ├── disease/              # Model, label, dan preprocessing penyakit
 │   └── pest/                 # Model, label, dan preprocessing hama
@@ -63,6 +62,7 @@ oryza-vision/
 │   ├── pest-model-comparison.ipynb
 │   └── export-to-tflite.ipynb
 ├── reports/
+│   ├── figures/              # Confusion matrix eksperimen
 │   └── conversion-report.json
 └── README.md
 ```
@@ -95,6 +95,25 @@ Eksperimen penyakit mengambil lima dari enam kelas yang tersedia. Eksperimen ham
 
 Dataset tidak disimpan di repository. Periksa kembali lisensi dan ketentuan penggunaan pada halaman sumber sebelum mendistribusikan data atau model turunannya.
 
+## Hasil evaluasi yang tersedia
+
+Visualisasi berikut berasal dari eksperimen perbandingan arsitektur. Angka precision, recall, dan F1 dihitung kembali dari nilai pada confusion matrix dengan metode macro average.
+
+| Eksperimen | Sampel | Accuracy | Macro precision | Macro recall | Macro F1 |
+|---|---:|---:|---:|---:|---:|
+| Penyakit — EfficientNet-B0 | 476 | 96,22% | 96,26% | 96,22% | 96,17% |
+| Hama — MobileNetV3-Large | 180 | 76,67% | 78,91% | 76,67% | 76,71% |
+
+### Penyakit — EfficientNet-B0
+
+![Confusion matrix EfficientNet-B0 untuk klasifikasi penyakit padi](reports/figures/disease-efficientnet-b0-confusion-matrix.png)
+
+### Hama — MobileNetV3-Large
+
+![Confusion matrix MobileNetV3-Large untuk klasifikasi hama padi](reports/figures/pest-mobilenet-v3-large-confusion-matrix.png)
+
+Kedua gambar di atas merupakan hasil model pembanding, bukan otomatis model TFLite final. Model deployment yang tersedia di repository adalah MobileNetV3-Large untuk penyakit dan EfficientNet-B0 untuk hama. Tambahkan confusion matrix model final ketika hasil evaluasinya tersedia agar perbandingan deployment lengkap.
+
 ## Validasi ekspor
 
 Menurut [`reports/conversion-report.json`](reports/conversion-report.json), kedua model TFLite lolos perbandingan terhadap model asal pada 10 input sintetis:
@@ -116,8 +135,6 @@ Saat memasang model di Flutter atau aplikasi mobile lain:
 - Jalankan softmax pada logits, kemudian petakan indeks ke file label.
 - Tangani orientasi kamera, foto buram, objek di luar kelas, dan confidence rendah.
 - Bandingkan beberapa prediksi aplikasi dengan hasil notebook menggunakan gambar yang sama.
-
-Contoh gambar tersedia di [`examples`](examples). Gambar tersebut hanya untuk pemeriksaan alur inferensi, bukan benchmark akurasi.
 
 ## Keterbatasan
 
